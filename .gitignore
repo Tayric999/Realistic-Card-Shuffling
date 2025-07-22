@@ -1,0 +1,47 @@
+import java.util.*;
+
+public class RealisticShuffle {
+    public static void main(String[] args) {
+        // 1. Create a full deck
+        List<String> deck = new ArrayList<>(Arrays.asList(
+                "A♥️", "2♥️", "3♥️", "4♥️", "5♥️", "6♥️", "7♥️", "8♥️", "9♥️", "10♥️", "J♥️", "Q♥️", "K♥️",
+                "A♣️", "2♣️", "3♣️", "4♣️", "5♣️", "6♣️", "7♣️", "8♣️", "9♣️", "10♣️", "J♣️", "Q♣️", "K♣️",
+                "A♦️", "2♦️", "3♦️", "4♦️", "5♦️", "6♦️", "7♦️", "8♦️", "9♦️", "10♦️", "J♦️", "Q♦️", "K♦️",
+                "A♠️", "2♠️", "3♠️", "4♠️", "5♠️", "6♠️", "7♠️", "8♠️", "9♠️", "10♠️", "J♠️", "Q♠️", "K♠️"
+        ));
+
+        // 2. Do riffle shuffle 3 times
+        for (int i = 0; i < 3; i++) {
+            deck = riffleShuffle(deck);
+        }
+
+        // 3. Output the result after 3 riffle shuffle
+        System.out.println("RIFFLE SHUFFLED DECK:");
+        System.out.println(deck);
+    }
+
+    public static List<String> riffleShuffle(List<String> deck) {
+        List<String> shuffled = new ArrayList<>();
+        Random rand = new Random();
+
+        // Cut the deck approximately in half
+        int mid = deck.size() / 2 + rand.nextInt(5) - 2; // ±2 variation
+        List<String> left = new ArrayList<>(deck.subList(0, mid));
+        List<String> right = new ArrayList<>(deck.subList(mid, deck.size()));
+
+        // Interleave the two halves
+        while (!left.isEmpty() || !right.isEmpty()) {
+            int leftDrop = rand.nextInt(3); // Drop 0–2 cards from left
+            int rightDrop = rand.nextInt(3); // Drop 0–2 cards from right
+
+            for (int i = 0; i < leftDrop && !left.isEmpty(); i++) {
+                shuffled.add(left.remove(0));
+            }
+
+            for (int i = 0; i < rightDrop && !right.isEmpty(); i++) {
+                shuffled.add(right.remove(0));
+            }
+        }
+        return shuffled;
+    }
+}
